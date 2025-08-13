@@ -1,93 +1,62 @@
 package com.syscoshop.product_service.controller;
 
+import com.syscoshop.product_service.Service.ProductService;
 import com.syscoshop.product_service.dto.ProductDTO;
-import com.syscoshop.product_service.model.Category;
-import com.syscoshop.product_service.model.Product;
-import com.syscoshop.product_service.model.Supplier;
-import com.syscoshop.product_service.repository.CategoryRepository;
-import com.syscoshop.product_service.repository.ProductRepository;
-import com.syscoshop.product_service.repository.SupplierRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 @RestController
-@RequestMapping("/api/v1/products")
-@CrossOrigin
-public class ProductController {
+@RequestMapping(AbstractController.BASE_PATH+"/")
+public class ProductController extends AbstractController {
 
-    private final ProductRepository productRepository;
-    private final CategoryRepository categoryRepository;
-    private final SupplierRepository supplierRepository;
+    private final ProductService productService;
 
-    public ProductController(ProductRepository productRepository, SupplierRepository supplierRepository, CategoryRepository categoryRepository){
-        this.productRepository = productRepository;
-        this.supplierRepository = supplierRepository;
-        this.categoryRepository =  categoryRepository;
-
+    public ProductController(ProductService productService){
+        this.productService = productService;
     }
 
-    private ProductDTO convertToDTO(Product product){
-        return new ProductDTO(
-                product.getId(),
-                product.getName(),
-                product.getDescription(),
-                product.getPrice(),
-                product.getAvailable(),
-                product.getCategory().getId(),
-                product.getSupplier().getId()
-        );
-    }
-
-    private Product convertToEntity(ProductDTO dto){
-        Optional<Category> category = categoryRepository.findById(dto.getCategoryId());
-        Optional<Supplier> supplier = supplierRepository.findById((dto.getSupplierId()));
-
-        if(category.isEmpty() || supplier.isEmpty()){
-            throw new RuntimeException("Invalid Category or Supplier Id");
-        }
-
-        Product product = new Product();
-        product.setName(dto.getName());
-        product.setDescription(dto.getDescription());
-        product.setPrice(dto.getPrice());
-        product.setAvailable(dto.getAvailable());
-        product.setCategory(category.get());
-        product.setSupplier(supplier.get());
-        return product;
-    }
-
-    @PostMapping
-    public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO productDTO){
-        Product product = productRepository.save(convertToEntity(productDTO));
-        return ResponseEntity.ok((convertToDTO(product)));
-    }
     @GetMapping
-    public List<ProductDTO> getAllProducts(){
+    public ResponseEntity<?> getAllProducts(
+            @RequestHeader("x-user-role") String role,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Long id
+    ){
 
-        return productRepository.findAll()
-                .stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+        logger.info("Fetching products");
+        if("admin".equalsIgnoreCase(role)){
+            return buildSuccessResponse(productService.getProductsForAdmin(name, id));
+        }
+        else{
+            return buildSuccessResponse(productService.getProductsForCustomer(name, id));
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id){
-        return productRepository.findById(id)
-                .map(product -> ResponseEntity.ok(convertToDTO(product)))
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> getProductById(@PathVariable Long id){
+        logger.info("Fetching Product with ID: {}", id);
+        ProductDTO productDTO = productService.getProductById(id);
+        return buildSuccessResponse(productDTO);
     }
 
-    @GetMapping("/search")
-    public List<ProductDTO> searchProductsByName(@RequestParam String name){
-        return productRepository.findByNameContainingIgnoreCase(name)
-                .stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    @PostMapping
+    public ResponseEntity<?> createProduct(@RequestBody ProductDTO productDTO){
+        logger.info("Creating new product: {}", productDTO.getName());
+        ProductDTO savedProduct = productService.createProduct(productDTO);
+        return buildSuccessResponse(savedProduct);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO){
+        logger.info("Updating product with id: {}", id);
+        ProductDTO updated = productService.updateProduct(id, productDTO);
+        return buildSuccessResponse(updated);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Long id){
+        logger.info("Deleting product with id: {}", id);
+        productService.deleteProduct(id);
+        return buildSuccessResponse("Product deleted successfully");
     }
 
 }

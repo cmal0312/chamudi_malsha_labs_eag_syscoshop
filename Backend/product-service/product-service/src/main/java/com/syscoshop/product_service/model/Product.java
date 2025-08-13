@@ -13,6 +13,9 @@ public class Product {
     private Double price;
     private Integer available;
 
+    @Column(nullable = false)
+    private Boolean approved = false;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
@@ -23,13 +26,14 @@ public class Product {
 
     public Product(){}
 
-    public Product(String name, Category category, String description, Double price, Supplier supplier, Integer available){
+    public Product(String name, Category category, String description, Double price, Supplier supplier, Integer available, Boolean approved){
         this.name = name;
         this.category = category;
         this.description = description;
         this.price = price;
         this.supplier = supplier;
         this.available = available;
+        this.approved = approved;
     }
 
     public long getId() {
@@ -86,5 +90,13 @@ public class Product {
 
     public void setAvailable(Integer available) {
         this.available = available;
+    }
+
+    public Boolean getApproved() {
+        return approved;
+    }
+
+    public void setApproved(Boolean approved) {
+        this.approved = approved;
     }
 }
