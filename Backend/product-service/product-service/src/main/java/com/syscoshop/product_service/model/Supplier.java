@@ -2,7 +2,6 @@ package com.syscoshop.product_service.model;
 
 import jakarta.persistence.*;
 
-import java.security.PublicKey;
 import java.util.List;
 
 @Entity

@@ -8,10 +8,11 @@ public class ProductDTO {
     private Integer available;
     private Long categoryId;
     private Long supplierId;
+    private Boolean approved;
 
     public ProductDTO(){}
 
-    public ProductDTO(Long id, String name, String description, double price, Integer available, Long categoryId, Long supplierId){
+    public ProductDTO(Long id, String name, String description, double price, Integer available, Long categoryId, Long supplierId, Boolean approved){
         this.id = id;
         this.name = name;
         this.description = description;
@@ -19,6 +20,7 @@ public class ProductDTO {
         this.available = available;
         this.categoryId = categoryId;
         this.supplierId = supplierId;
+        this.approved = approved;
     }
 
     public Long getId() {
@@ -75,5 +77,13 @@ public class ProductDTO {
 
     public void setSupplierId(Long supplierId) {
         this.supplierId = supplierId;
+    }
+
+    public Boolean getApproved() {
+        return approved;
+    }
+
+    public void setApproved(Boolean approved) {
+        this.approved = approved;
     }
 }
