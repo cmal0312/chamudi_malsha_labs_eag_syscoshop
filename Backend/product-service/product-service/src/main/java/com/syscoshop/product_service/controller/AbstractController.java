@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public abstract class AbstractController {
 
-    public static final String BASE_PATH = "/api/v1/products";
+//    public static final String BASE_PATH = "/api/v1/products";
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 

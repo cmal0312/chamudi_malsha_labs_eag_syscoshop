@@ -13,6 +13,7 @@ public class CartItem {
     private String name;
     private Double price;
     private Integer quantity;
+    private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id")
@@ -20,11 +21,12 @@ public class CartItem {
 
     public CartItem() {}
 
-    public CartItem(String productId, String name, Double price, Integer quantity) {
+    public CartItem(String productId, String name, Double price, Integer quantity, String imageUrl) {
         this.productId = productId;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
+        this.imageUrl = imageUrl;
     }
 
     // --- Getters and Setters ---
@@ -71,5 +73,11 @@ public class CartItem {
 
     public void setCart(Cart cart) {
         this.cart = cart;
+    }
+
+    public void setImageUrl(String imageUrl){this.imageUrl = imageUrl;}
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

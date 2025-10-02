@@ -31,9 +31,14 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public SupplierDTO getSupplierById(Long id){
-        Supplier supplier = supplierRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Supplier not found for id"+ id));
+    public SupplierDTO getSupplierById(String id){
+        Supplier supplier = supplierRepository.findByCognitoId(id)
+                .orElseGet(() -> {
+                    Supplier newSupplier = new Supplier();
+                    newSupplier.setCognitoId(id);
+                    newSupplier.setName(id);
+                    return supplierRepository.save(newSupplier);
+                });
         return supplierMapper.convertToDTO(supplier);
     }
 
@@ -45,11 +50,10 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public void deleteSupplier(Long id){
-        if(!supplierRepository.existsById(id)){
-            throw new ResourceNotFoundException("Supplier not found for id: "+ id);
-        }
-        supplierRepository.deleteById(id);
-    }
+    public void deleteSupplier(String id) {
+        Supplier supplier = supplierRepository.findByCognitoId(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found for Cognito ID: " + id));
 
+        supplierRepository.delete(supplier);
+    }
 }

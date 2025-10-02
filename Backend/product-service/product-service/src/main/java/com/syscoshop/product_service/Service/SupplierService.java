@@ -8,9 +8,9 @@ public interface SupplierService {
 
     List<SupplierDTO> getSuppliers();
 
-    SupplierDTO getSupplierById(Long id);
+    SupplierDTO getSupplierById(String id);
 
     SupplierDTO createSupplier(SupplierDTO supplierDTO);
 
-    void deleteSupplier(Long id);
+    void deleteSupplier(String id);
 }

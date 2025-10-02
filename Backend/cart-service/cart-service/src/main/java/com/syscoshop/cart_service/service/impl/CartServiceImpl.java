@@ -45,38 +45,68 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartDTO getCart(String customerId){
-        return cartMapper.convertToDTO(cartRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Cart not found for the customer: "+ customerId)));
+    public CartDTO getCart(String customerId) {
+        Cart cart = cartRepository.findById(customerId)
+                .orElseGet(() -> {
+                    // Cart not found, create a new one
+                    Cart newCart = new Cart(customerId);
+                    newCart.setItems(new ArrayList<>());
+                    newCart.setTotal(0.0);
+                    return cartRepository.save(newCart);
+                });
+
+        return cartMapper.convertToDTO(cart);
     }
+
+
 
     @Override
     public CartDTO updateCart(String customerId, List<CartItemDTO> updatedItems) {
         Cart existingCart = cartRepository.findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart not found for customer: " + customerId));
 
-        // Clear the current items to safely trigger orphan removal
-        existingCart.getItems().clear();
+        // Convert current items into a map for quick lookup
+        Map<String, CartItem> currentItems = existingCart.getItems()
+                .stream()
+                .collect(Collectors.toMap(CartItem::getProductId, item -> item));
 
-        // Add updated items
         for (CartItemDTO dto : updatedItems) {
-            if (dto.getQuantity() == null || dto.getQuantity() <= 0) continue; // skip or optionally throw
+            String productId = dto.getProductId();
 
-            CartItem item = new CartItem();
-            item.setProductId(dto.getProductId());
-            item.setName(dto.getName());
-            item.setQuantity(dto.getQuantity());
-            item.setPrice(dto.getPrice());
-            item.setCart(existingCart); // maintain bidirectional relationship
+            if (dto.getQuantity() == null || dto.getQuantity() <= 0) {
+                CartItem toRemove = currentItems.get(productId);
+                if (toRemove != null) {
+                    existingCart.getItems().remove(toRemove);
+                }
+            } else {
+                CartItem existingItem = currentItems.get(productId);
 
-            existingCart.getItems().add(item);
+                if (existingItem != null) {
+                    // Replace quantity
+                    existingItem.setQuantity(dto.getQuantity());
+                    existingItem.setPrice(dto.getPrice()); // update price if necessary
+                    existingItem.setName(dto.getName());
+                    existingItem.setImageUrl(dto.getImageUrl());
+                } else {
+                    // Add new item
+                    CartItem newItem = new CartItem();
+                    newItem.setProductId(dto.getProductId());
+                    newItem.setName(dto.getName());
+                    newItem.setQuantity(dto.getQuantity());
+                    newItem.setPrice(dto.getPrice());
+                    newItem.setImageUrl(dto.getImageUrl());
+                    newItem.setCart(existingCart); // maintain relationship
+                    existingCart.getItems().add(newItem);
+                }
+            }
         }
 
-        // Recalculate total and save
+        // Recalculate total
         existingCart.setTotal(CartUtil.CalculateTotal(existingCart));
-        Cart updatedCart = cartRepository.save(existingCart);
 
+        Cart updatedCart = cartRepository.save(existingCart);
         return cartMapper.convertToDTO(updatedCart);
     }
+
 
 }

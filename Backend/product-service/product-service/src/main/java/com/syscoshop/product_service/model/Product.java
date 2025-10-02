@@ -12,9 +12,22 @@ public class Product {
     private String description;
     private Double price;
     private Integer available;
+    private String imageUrl;
 
     @Column(nullable = false)
     private Boolean approved = false;
+
+
+    @Column(nullable = false)
+    private Boolean rejected = false;
+
+    public Boolean getRejected() {
+        return rejected;
+    }
+
+    public void setRejected(Boolean rejected) {
+        this.rejected = rejected;
+    }
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -26,7 +39,7 @@ public class Product {
 
     public Product(){}
 
-    public Product(String name, Category category, String description, Double price, Supplier supplier, Integer available, Boolean approved){
+    public Product(String name, Category category, String description, Double price, Supplier supplier, Integer available, Boolean approved, String imageUrl, Boolean rejected){
         this.name = name;
         this.category = category;
         this.description = description;
@@ -34,6 +47,8 @@ public class Product {
         this.supplier = supplier;
         this.available = available;
         this.approved = approved;
+        this.imageUrl = imageUrl;
+        this.rejected = rejected;
     }
 
     public long getId() {
@@ -98,5 +113,14 @@ public class Product {
 
     public void setApproved(Boolean approved) {
         this.approved = approved;
+    }
+
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

@@ -15,6 +15,8 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
     List<Product> findByNameContainingIgnoreCaseAndApprovedFalse(String name);
     List<Product> findByCategory_IdAndApprovedTrue(Long id);
     List<Product> findByCategory_IdAndApprovedFalse(Long id);
+    List<Product> findBySupplier_IdAndApprovedTrue(Long supplierId);
+    List<Product> findBySupplier_IdAndApprovedFalse(Long supplierId);
     List<Product> findByNameContainingIgnoreCaseAndCategory_IdAndApprovedTrue(String name, Long id);
     List<Product> findByNameContainingIgnoreCaseAndCategory_IdAndApprovedFalse(String name, Long id);
 

@@ -11,6 +11,9 @@ public class Supplier {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    private String cognitoId;
+
     private String name;
 
     @OneToMany(mappedBy = "supplier")
@@ -18,8 +21,8 @@ public class Supplier {
 
     public Supplier(){}
 
-    public Supplier(String name){
-        this.name = name;
+    public Supplier(String cognitoId){
+        this.cognitoId = cognitoId;
     }
 
     public List<Product> getProducts() {
@@ -45,4 +48,13 @@ public class Supplier {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getCognitoId() {
+        return cognitoId;
+    }
+
+    public void setCognitoId(String cognitoId) {
+        this.cognitoId = cognitoId;
+    }
+
 }

@@ -21,6 +21,7 @@ public class CartItemMapper {
         cartItemDTO.setName(cartItem.getName());
         cartItemDTO.setPrice(cartItem.getPrice());
         cartItemDTO.setQuantity(cartItem.getQuantity());
+        cartItemDTO.setImageUrl(cartItem.getImageUrl());
         return cartItemDTO;
     }
 }
