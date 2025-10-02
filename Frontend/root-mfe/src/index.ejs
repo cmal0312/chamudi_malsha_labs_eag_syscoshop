@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SyscoShop</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="https://download.logo.wine/logo/Sysco/Sysco-Logo.wine.png" type="image/png" />
+
+    <!-- SystemJS for module loading -->
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@6.10.3/dist/system.min.js"></script>
+    <!-- Import map for shared deps -->
+    <script type="systemjs-importmap">
+      {
+        "imports": {
+          "single-spa": "https://cdn.jsdelivr.net/npm/single-spa@5.9.5/lib/system/single-spa.min.js",
+          "react": "https://unpkg.com/react@18.2.0/umd/react.production.min.js",
+          "react-dom": "https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js",
+          "react-dom/client": "https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"
+        }
+      }
+    </script>
+
+    <script type="systemjs-importmap">
+      {
+        "imports": {
+          "@SyscoShop/root-config": "//localhost:9001/SyscoShop-root-config.js",
+          "@SyscoShop/customer-mfe": "//localhost:9002/SyscoShop-customer-mfe.js",
+          "@SyscoShop/admin-mfe": "//localhost:9003/SyscoShop-admin-mfe.js",
+          "@SyscoShop/supplier-mfe": "//localhost:9004/SyscoShop-supplier-mfe.js"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <main></main>
+    <script>
+      System.import("@SyscoShop/root-config");
+    </script>
+  </body>
+</html>
