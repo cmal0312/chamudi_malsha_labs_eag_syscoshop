@@ -1,12 +1,13 @@
 package com.syscoshop.product_service.controller;
 
 import com.syscoshop.product_service.Service.SupplierService;
+import com.syscoshop.product_service.constants.Constants;
 import com.syscoshop.product_service.dto.SupplierDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(AbstractController.BASE_PATH+"/suppliers")
+@RequestMapping(Constants.BASE_PATH+"/suppliers")
 public class SupplierController extends AbstractController {
 
     private final SupplierService supplierService;
@@ -19,28 +20,48 @@ public class SupplierController extends AbstractController {
     @GetMapping
     public ResponseEntity<?> getAllSuppliers(){
         logger.info("Fetching suppliers");
-        return buildSuccessResponse(supplierService.getSuppliers());
+        try {
+            return buildSuccessResponse(supplierService.getSuppliers());
+        } catch (Exception e) {
+            logger.info("Error fetching suppliers from product-service");
+            throw e;
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getSupplierById(@PathVariable Long id){
+    public ResponseEntity<?> getSupplierById(@PathVariable String id){
         logger.info("Fetching supplier for id: {}", id);
-        SupplierDTO supplierDTO = supplierService.getSupplierById(id);
-        return buildSuccessResponse(supplierDTO);
+        try {
+            SupplierDTO supplierDTO = supplierService.getSupplierById(id);
+            return buildSuccessResponse(supplierDTO);
+        } catch (Exception e) {
+            logger.info("Error fetching supplier from product-service");
+            throw e;
+        }
     }
 
     @PostMapping
     public ResponseEntity<?> createSupplier(@RequestBody SupplierDTO supplierDTO){
         logger.info("Creating new supplier: {}", supplierDTO.getName());
-        SupplierDTO supplier = supplierService.createSupplier(supplierDTO);
-        return buildSuccessResponse(supplier);
+        try {
+            SupplierDTO supplier = supplierService.createSupplier(supplierDTO);
+            return buildSuccessResponse(supplier);
+        } catch (Exception e) {
+            logger.info("Error creating new supplier");
+            throw e;
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteSupplier(@PathVariable Long id){
+    public ResponseEntity<?> deleteSupplier(@PathVariable String id){
         logger.info("Deleting supplier with id: {}", id);
-        supplierService.deleteSupplier(id);
-        return buildSuccessResponse("Product deleted successfully");
+        try {
+            supplierService.deleteSupplier(id);
+            return buildSuccessResponse("Supplier deleted successfully");
+        } catch (Exception e) {
+            logger.info("Error deleting supplier");
+            throw e;
+        }
     }
 
 }

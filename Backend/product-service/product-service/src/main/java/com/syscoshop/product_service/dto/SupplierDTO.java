@@ -4,6 +4,7 @@ public class SupplierDTO {
 
     private Long id;
     private String name;
+    private String cognitoId;
 
     public String getName() {
         return name;
@@ -19,5 +20,13 @@ public class SupplierDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getCognitoId() {
+        return cognitoId;
+    }
+
+    public void setCognitoId(String cognitoId) {
+        this.cognitoId = cognitoId;
     }
 }

@@ -7,12 +7,14 @@ public class ProductDTO {
     private double price;
     private Integer available;
     private Long categoryId;
-    private Long supplierId;
+    private String supplierId;
     private Boolean approved;
+    private String imageUrl;
+    private Boolean rejected;
 
     public ProductDTO(){}
 
-    public ProductDTO(Long id, String name, String description, double price, Integer available, Long categoryId, Long supplierId, Boolean approved){
+    public ProductDTO(Long id, String name, String description, double price, Integer available, Long categoryId, String supplierId, Boolean approved, String imageUrl, Boolean rejected){
         this.id = id;
         this.name = name;
         this.description = description;
@@ -21,6 +23,8 @@ public class ProductDTO {
         this.categoryId = categoryId;
         this.supplierId = supplierId;
         this.approved = approved;
+        this.imageUrl = imageUrl;
+        this.rejected = rejected;
     }
 
     public Long getId() {
@@ -71,11 +75,11 @@ public class ProductDTO {
         this.categoryId = categoryId;
     }
 
-    public Long getSupplierId() {
+    public String getSupplierId() {
         return supplierId;
     }
 
-    public void setSupplierId(Long supplierId) {
+    public void setSupplierId(String supplierId) {
         this.supplierId = supplierId;
     }
 
@@ -86,4 +90,23 @@ public class ProductDTO {
     public void setApproved(Boolean approved) {
         this.approved = approved;
     }
+
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+
+    public Boolean getRejected() {
+        return rejected;
+    }
+
+    public void setRejected(Boolean rejected) {
+        this.rejected = rejected;
+    }
+
 }

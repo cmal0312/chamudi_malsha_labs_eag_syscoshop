@@ -29,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> getProductsForAdmin(String name, Long id){
+    public List<ProductDTO> getProductsForAdmin(String name, Long id, Long supplierId){
 
         List<Product> filteredProducts;
 
@@ -39,7 +39,10 @@ public class ProductServiceImpl implements ProductService {
             filteredProducts = productRepository.findByNameContainingIgnoreCaseAndApprovedFalse(name);
         } else if (id != null){
             filteredProducts = productRepository.findByCategory_IdAndApprovedFalse(id);
-        } else{
+        } else if (supplierId != null){
+            filteredProducts = productRepository.findBySupplier_IdAndApprovedFalse(supplierId);
+        }
+        else{
             filteredProducts = productRepository.findByApprovedFalse();
         }
         return filteredProducts
@@ -49,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> getProductsForCustomer(String name, Long id){
+    public List<ProductDTO> getProductsForCustomer(String name, Long id, Long supplierId){
 
         List<Product> filteredProducts;
 
@@ -59,7 +62,10 @@ public class ProductServiceImpl implements ProductService {
             filteredProducts = productRepository.findByNameContainingIgnoreCaseAndApprovedTrue(name);
         } else if (id != null){
             filteredProducts = productRepository.findByCategory_IdAndApprovedTrue(id);
-        } else{
+        } else if (supplierId != null){
+            filteredProducts = productRepository.findBySupplier_IdAndApprovedTrue(supplierId);
+        }
+        else{
             filteredProducts = productRepository.findByApprovedTrue();
         }
         return filteredProducts
@@ -92,7 +98,7 @@ public class ProductServiceImpl implements ProductService {
         existing.setDescription(productDTO.getDescription());
         existing.setAvailable(productDTO.getAvailable());
         existing.setPrice(productDTO.getPrice());
-        existing.setSupplier(supplierRepository.findById(productDTO.getSupplierId())
+        existing.setSupplier(supplierRepository.findByCognitoId(productDTO.getSupplierId())
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier not found for ID: "+ productDTO.getSupplierId())));
 
         existing.setApproved(productDTO.getApproved());

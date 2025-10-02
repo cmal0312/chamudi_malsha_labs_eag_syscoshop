@@ -28,15 +28,17 @@ public class ProductMapper {
                 product.getPrice(),
                 product.getAvailable(),
                 product.getCategory().getId(),
-                product.getSupplier().getId(),
-                product.getApproved()
+                product.getSupplier().getCognitoId(),
+                product.getApproved(),
+                product.getImageUrl(),
+                product.getRejected()
         );
     }
 
     public Product convertToEntity(ProductDTO dto){
         Category category = categoryRepository.findById(dto.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found "));
-        Supplier supplier = supplierRepository.findById((dto.getSupplierId()))
+        Supplier supplier = supplierRepository.findByCognitoId(dto.getSupplierId())
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
 
         Product product = new Product();
@@ -47,6 +49,8 @@ public class ProductMapper {
         product.setCategory(category);
         product.setSupplier(supplier);
         product.setApproved(dto.getApproved());
+        product.setImageUrl(dto.getImageUrl());
+        product.setRejected(dto.getRejected());
         return product;
     }
 }

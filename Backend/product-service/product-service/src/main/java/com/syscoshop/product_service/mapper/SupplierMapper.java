@@ -19,6 +19,7 @@ public class SupplierMapper {
         SupplierDTO supplierDTO = new SupplierDTO();
         supplierDTO.setId(supplier.getId());
         supplierDTO.setName(supplier.getName());
+        supplierDTO.setCognitoId(supplier.getCognitoId());
         return supplierDTO;
     }
 
@@ -26,6 +27,7 @@ public class SupplierMapper {
 
         Supplier supplier = new Supplier();
         supplier.setId(supplierDTO.getId());
+        supplier.setCognitoId(supplierDTO.getCognitoId());
         supplier.setName(supplierDTO.getName());
         return supplier;
     }
