@@ -1,0 +1,146 @@
+/* Reset / Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  background-color: #fff;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  color: #43b02a;
+}
+
+button, .ant-btn {
+  font-family: inherit;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.ant-btn-primary {
+  background-color: #43b02a;
+  border-color: #43b02a;
+}
+
+.ant-btn-primary:hover {
+  background-color: #369023;
+  border-color: #369023;
+}
+
+/* Headings */
+h2, h3, h4, h5, h6 {
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  color: #222;
+}
+
+/* Navbar */
+.navbar {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  padding: 16px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar a {
+  color: #fff;
+  font-weight: 500;
+  margin: 0 12px;
+}
+
+.navbar a:hover {
+  color: #43b02a;
+}
+
+/* Landing Page Styles */
+.landing {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  width: 100vw;
+  background-image: url("https://mediacdn.sysco.com/images/rendition?id=ec60ed2cb90f9014d074482b75a80ac51f04dd3d&disp=inline&prid=DEFAULT");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  font-family: "Open Sans", Arial, sans-serif;
+}
+
+/* Header */
+.landing-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 48px;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+
+.landing-header nav {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.landing-header a {
+  color: #fff;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.landing-header a.become {
+  color: #43b02a;
+  font-weight: 600;
+}
+
+.landing-header a.signin {
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Hero Section */
+.landing-hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  text-align: center;
+  padding: 0 20px;
+  padding-top: 120px; 
+}
+
+.landing-hero h1 {
+  font-size: 64px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.landing-hero p {
+  font-size: 22px;
+  max-width: 800px;
+  margin-bottom: 40px;
+}
+

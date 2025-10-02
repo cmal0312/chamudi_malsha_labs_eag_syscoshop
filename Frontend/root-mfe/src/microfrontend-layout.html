@@ -1,0 +1,16 @@
+<single-spa-router>
+  <main>
+    <route path="/login"></route>
+    <route path="/auth/callback">
+    </route>
+    <route path="/customer">
+      <application name="@SyscoShop/customer-mfe"></application>
+    </route>
+    <route path="/admin">
+      <application name="@SyscoShop/admin-mfe"></application>
+    </route>
+    <route path="/supplier">
+      <application name="@SyscoShop/supplier-mfe"></application>
+    </route>
+  </main>
+</single-spa-router>
